@@ -1,27 +1,39 @@
 def encrypt(text, shift):
-    encrypted_text = ""
-
+    result = ""
     for char in text:
-        if char.isalpha():
-            if char.isupper():
-                encrypted_text += chr((ord(char) - ord('A') + shift) % 26 + ord('A'))
-            else:
-                encrypted_text += chr((ord(char) - ord('a') + shift) % 26 + ord('a'))
+        if char.isupper():
+            # Shift uppercase letters
+            result += chr((ord(char) + shift - 65) % 26 + 65)
+        elif char.islower():
+            # Shift lowercase letters
+            result += chr((ord(char) + shift - 97) % 26 + 97)
         else:
-            encrypted_text += char
-
-    return encrypted_text
-
+            # Keep spaces and special characters as they are
+            result += char
+    return result
 
 def decrypt(text, shift):
-    return encrypt(text, -shift)
+    result = ""
+    for char in text:
+        if char.isupper():
+            # Reverse shift uppercase letters
+            result += chr((ord(char) - shift - 65) % 26 + 65)
+        elif char.islower():
+            # Reverse shift lowercase letters
+            result += chr((ord(char) - shift - 97) % 26 + 97)
+        else:
+            # Keep spaces and special characters as they are
+            result += char
+    return result
 
+# Main Program
+text_input = input("Enter the message: ")
+shift_key = int(input("Enter shift key: "))
 
-message = input("Enter your message: ")
-shift = int(input("Enter shift value: "))
+# Running Encryption
+encrypted_text = encrypt(text_input, shift_key)
+print("Encrypted message:", encrypted_text)
 
-encrypted = encrypt(message, shift)
-print("\nEncrypted Message:", encrypted)
-
-decrypted = decrypt(encrypted, shift)
-print("Decrypted Message:", decrypted)
+# Running Decryption
+decrypted_text = decrypt(encrypted_text, shift_key)
+print("Decrypted message:", decrypted_text)
